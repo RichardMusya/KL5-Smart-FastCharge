@@ -1,6 +1,3 @@
-cd ~/KL5_FastCharge
-
-cat > README.md <<'EOF'
 # KL5 Smart FastCharge
 
 **A Magisk module for TECNO Spark 30C (KL5)**
