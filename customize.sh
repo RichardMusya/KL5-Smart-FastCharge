@@ -1,0 +1,12 @@
+#!/system/bin/sh
+ui_print " "
+ui_print "  KL5 SMART FASTCHARGE CONTROL CENTER"
+ui_print "  Version 2.0.1 | Richard Musya"
+ui_print " "
+ui_print "- Updating existing dashboard and diagnostics"
+ui_print "- Target: TECNO Spark 30C (KL5) / SGM41516D-aware backend"
+ui_print "- Existing brightness, thresholds, reports and boot greeting retained"
+ui_print "- Fast profiles require confirmed source/driver limits and writable kernel nodes"
+ui_print "- No raw I2C writes, source spoofing or thermal bypass"
+ui_print "- KsuWebUI host is required for the interface"
+ui_print " "

@@ -1,64 +1,56 @@
-# KL5 Smart FastCharge
+# KL5 Smart FastCharge Control Center v2.0.1
 
-**A Magisk module for TECNO Spark 30C (KL5)**
+**Developer:** Richard Musya  
+**Device target:** TECNO Spark 30C (KL5)  
+**Root manager:** Magisk  
+**Interface host:** KsuWebUI standalone  
+**Charging controller observed on the tested device:** SGM41516D (`/sys/bus/i2c/devices/5-006b`)
 
-Developed and maintained by **Richard Musya**.
+## v2.0.1 functions
 
----
+- Retains the v2.0 KsuWebUI dashboard and boot greeting.
+- Retains manual brightness control through Android Settings.
+- Retains charge/temperature reference thresholds, diagnostic report generation and log viewing.
+- Adds guarded Normal, Fast and Fastest profile requests through the active SGM41516D power-supply interface; Adaptive maps to Normal stock control.
+- Detects the currently negotiated USB source from the bracketed `usb_type` value. A PC USB SDP connection is treated as SDP, not as a wall charger.
+- Checks reported input/charge ceilings, battery temperature, battery level and sysfs write permissions before requesting elevated current.
+- Verifies values by reading the kernel nodes back. A rejected or unverified request restores the captured baseline and reports Normal as applied.
+- Watches charger attach/detach and source changes at 500 ms intervals; checks thermal and state-of-charge fallback.
+- Displays the developer's GitHub avatar in place of the RM initials.
 
-## Copyright and Ownership
+## Profile request targets
+
+| Profile | Input-current request | Battery charge-current request |
+|---|---:|---:|
+| Normal | Stock MediaTek policy | Stock MediaTek policy |
+| Fast | 1,500,000 µA | 1,000,000 µA |
+| Fastest | 2,400,000 µA | 1,500,000 µA |
+| Adaptive | Stock MediaTek policy | Stock MediaTek policy |
+
+These are request ceilings, not promises of measured charging speed or power. The active adapter classification, SGM41516D driver, MediaTek charging framework, battery state and kernel-exposed limits determine what can actually be applied. For example, a PC USB SDP source normally negotiates a 500 mA class and will be refused for Fast/Fastest. CDP and DCP/PD classifications are handled according to the current negotiated and driver-reported limits. High battery state-of-charge and battery temperature at/above 40°C suspend elevated profiles; the watcher returns an applied elevated profile to Normal at 90% or 40°C.
+
+## Kernel-level limitation
+
+This release does not replace the phone's kernel or patch the SGM41516D driver. The supplied device diagnostics establish the active `sgm41516d` binding but do not provide the exact matching kernel source tree, defconfig, device tree build configuration, toolchain or a reproducible boot image. Shipping a generic or mismatched boot image would be unsafe. This module therefore uses only the kernel's existing power-supply sysfs interface and refuses requests if the nodes are not writable or do not report sufficient limits. It does not poke raw I2C registers, change sysfs permissions, spoof USB source types, or bypass stock thermal/protocol control.
+
+## Install
+
+1. In Magisk, open **Modules** and choose **Install from storage**.
+2. Select `KL5_Smart_FastCharge_v2.0.1.zip`.
+3. Reboot.
+4. Open KL5 Smart FastCharge through KsuWebUI and grant root access.
+5. Connect a suitable wall adapter/cable to evaluate Fast/Fastest. A PC USB connection will normally report SDP and be limited accordingly.
+
+This is a Magisk module ZIP. It is not a recovery-flashable boot image and does not flash a kernel.
+
+## Developer
+
+Richard Musya  
+GitHub: https://github.com/RichardMusya  
+Project: https://github.com/RichardMusya/KL5-Smart-FastCharge
+
+## Copyright and disclaimer
 
 Copyright © 2026 Richard Musya. All Rights Reserved.
 
-This project, including its source code, scripts, documentation, configuration files, and associated materials, is the intellectual property of Richard Musya.
-
-No part of this project may be copied, redistributed, republished, sold, sublicensed, or modified for redistribution without prior written permission from the copyright holder, except where applicable law expressly permits otherwise.
-
-Downloading or using this project does not transfer ownership or grant permission to commercially exploit the project.
-
-## Project Description
-
-KL5 Smart FastCharge is a Magisk module developed for the TECNO Spark 30C (KL5).
-
-The current implementation provides:
-
-- Device compatibility checks.
-- SC8950 charging-controller detection.
-- Boot-time initialization.
-- Charging status monitoring.
-- Battery level, temperature, voltage, and current monitoring.
-- Charging diagnostic logs.
-- Screen-state monitoring.
-- Preservation of the device's existing charging and thermal protections.
-
-**Important:** The current implementation is a charging-monitoring and diagnostic module. It does not independently unlock, force, or guarantee 18W fast charging. Actual charging performance depends on the phone's hardware, charger, cable, kernel, charging controller, battery condition, and software configuration.
-
-## Compatibility
-
-| Component | Target |
-|---|---|
-| Device | TECNO Spark 30C |
-| Device model | KL5 |
-| Root solution | Magisk |
-| Charging controller | SC8950 |
-| Android | Android 16 / compatible ROMs |
-
-Compatibility with other devices or Android versions is not guaranteed.
-
-## Installation
-
-1. Make sure your device is rooted with Magisk.
-2. Download the module ZIP from the project's GitHub Releases page.
-3. Open the Magisk application.
-4. Navigate to Modules.
-5. Select Install from storage.
-6. Choose the downloaded ZIP file.
-7. Restart your device.
-8. Check the module logs if troubleshooting is required.
-
-## Diagnostic Logs
-
-The module stores its diagnostic logs under:
-
-```text
-/data/adb/kl5_fastcharge/
+Software is provided AS IS, without warranties, to the maximum extent permitted by applicable law. Use at your own risk. The developer is not responsible for device damage, data loss, charging faults, display issues, or other losses arising from use, modification, or installation, to the maximum extent permitted by applicable law. Nothing here excludes liability where prohibited by law.

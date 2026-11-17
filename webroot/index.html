@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>KL5 Smart FastCharge</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">⚡</div>
+      <div><div class="brand-name">KL5 <span>SMART</span></div><div class="brand-sub">FASTCHARGE CONTROL CENTER</div></div>
+    </div>
+    <div class="top-right"><span class="live-dot"></span><span id="connection">CONNECTING</span><button class="icon-btn" id="refreshBtn" aria-label="Refresh">↻</button></div>
+  </header>
+
+  <main>
+    <section class="welcome-card">
+      <div class="welcome-copy">
+        <div class="eyebrow">TECNO SPARK 30C · KL5</div>
+        <h1>Power, <em>under control.</em></h1>
+        <p id="greeting">Welcome. Initializing your device dashboard…</p>
+        <div class="developer-line">ENGINEERED BY <strong>RICHARD MUSYA</strong></div>
+      </div>
+      <div class="orb"><div class="orb-core">⚡</div></div>
+    </section>
+
+    <section class="section-head"><div><div class="eyebrow">LIVE TELEMETRY</div><h2>Battery overview</h2></div><span class="pill" id="chargeState">READING</span></section>
+    <section class="metrics-grid">
+      <article class="metric-card battery-card">
+        <div class="metric-label">BATTERY LEVEL</div><div class="metric-main"><span id="level">--</span><small>%</small></div>
+        <div class="meter"><span id="levelBar"></span></div><div class="metric-foot" id="batteryStatus">Waiting for telemetry</div>
+      </article>
+      <article class="metric-card"><div class="metric-label">TEMPERATURE</div><div class="metric-main"><span id="temp">--</span><small>°C</small></div><div class="metric-foot" id="tempHint">Battery sensor</div></article>
+      <article class="metric-card"><div class="metric-label">VOLTAGE</div><div class="metric-main"><span id="voltage">--</span><small>V</small></div><div class="metric-foot">Battery terminal</div></article>
+      <article class="metric-card"><div class="metric-label">CURRENT</div><div class="metric-main"><span id="current">--</span><small>mA</small></div><div class="metric-foot">Battery current</div></article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head compact"><div><div class="eyebrow">CHARGING BEHAVIOUR</div><h2>Charging profiles</h2></div><span class="pill neutral" id="profileBadge">NORMAL</span></div>
+      <p class="muted">Select Normal, Fast or Fastest. Elevated profiles are requested through the active SGM41516D power-supply interface and are shown as applied only after kernel read-back verification. The adapter, MediaTek framework and thermal controller retain final authority.</p>
+      <div class="profile-grid">
+        <button class="profile" data-profile="normal"><span class="profile-icon">◉</span><b>Normal</b><small>Stock behaviour</small></button>
+        <button class="profile" data-profile="fast"><span class="profile-icon">ϟ</span><b>Fast</b><small>Up to verified 1.5 A input</small></button>
+        <button class="profile" data-profile="fastest"><span class="profile-icon">ϟϟ</span><b>Fastest</b><small>Up to verified 2.4 A input</small></button>
+        <button class="profile" data-profile="adaptive"><span class="profile-icon">✧</span><b>Adaptive</b><small>Stock adaptive policy</small></button>
+      </div>
+      <div class="notice"><span>ⓘ</span><div><strong>Verified control, not a speed guarantee</strong><br>Profiles are refused when the source, driver ceiling, battery condition or kernel write interface does not authorize them. No charging protections are bypassed.</div></div><div id="profileMessage" class="inline-message" role="status">Reading charger capabilities…</div>
+      <div class="micro-grid">
+        <div><span>CHARGER DRIVER</span><b id="driverState">--</b></div>
+        <div><span>USB TYPE</span><b id="usbType">--</b></div>
+        <div><span>INPUT LIMIT</span><b id="inputLimit">--</b></div>
+        <div><span>CHARGE LIMIT</span><b id="chargeLimit">--</b></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head compact"><div><div class="eyebrow">DISPLAY TOOLS</div><h2>Manual brightness</h2></div><span class="pill neutral" id="brightnessMode">--</span></div>
+      <p class="muted">Set Android's manual screen-brightness level. This uses the Settings provider and does not write directly to panel or vendor calibration nodes.</p>
+      <div class="brightness-value"><strong id="brightnessValue">--</strong><span>/ 255</span></div>
+      <input id="brightnessSlider" type="range" min="1" max="255" value="128">
+      <div class="range-labels"><span>Dim</span><span>Bright</span></div>
+      <div class="button-row"><button class="btn primary" id="applyBrightness">Apply manual level</button><button class="btn secondary" id="autoBrightness">Restore auto</button></div>
+      <div class="preset-row"><button class="chip" data-bright="40">Night</button><button class="chip" data-bright="90">Indoor</button><button class="chip" data-bright="160">Daylight</button><button class="chip" data-bright="230">Outdoor</button></div>
+      <div id="brightnessMessage" class="inline-message"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head compact"><div><div class="eyebrow">SMART REFERENCES</div><h2>Battery thresholds</h2></div><span class="pill neutral">MONITOR ONLY</span></div>
+      <div class="setting-row"><div><b>Charge level reference</b><small>Personal reminder target; does not stop charging.</small></div><div class="setting-control"><input id="chargeAlert" type="number" min="50" max="100" value="80"><span>%</span></div></div>
+      <div class="setting-row"><div><b>Temperature reference</b><small>Display reference only; stock thermal protection stays active.</small></div><div class="setting-control"><input id="tempAlert" type="number" min="35" max="50" value="42"><span>°C</span></div></div>
+      <div class="button-row"><button class="btn primary" id="saveThresholds">Save references</button></div>
+      <div id="thresholdMessage" class="inline-message"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head compact"><div><div class="eyebrow">DIAGNOSTICS</div><h2>Device intelligence</h2></div><span class="pill neutral">CRDROID GSI</span></div>
+      <div class="device-list">
+        <div><span>Device</span><b id="deviceModel">--</b></div>
+        <div><span>Android</span><b id="androidVersion">--</b></div>
+        <div><span>Build</span><b id="buildName">--</b></div>
+        <div><span>Charging input</span><b id="onlineState">--</b></div>
+      </div>
+      <div class="button-row"><button class="btn secondary" id="makeReport">Generate diagnostic report</button><button class="btn secondary" id="viewLogs">View recent logs</button></div>
+      <pre id="diagnosticOutput" class="output-box">Diagnostic output will appear here.</pre>
+    </section>
+
+    <section class="developer-card">
+      <img class="developer-badge avatar-badge" src="https://github.com/RichardMusya.png" alt="Richard Musya GitHub profile avatar">
+      <div class="eyebrow">BUILT WITH PURPOSE</div>
+      <h2>Thank you for using<br><em>KL5 Smart FastCharge.</em></h2>
+      <p>Designed and maintained by <strong>Richard Musya</strong>. Thank you for testing, reporting issues and supporting independent Android development.</p>
+      <a class="github-link" href="https://github.com/RichardMusya" target="_blank" rel="noopener">↗ Follow the developer on GitHub</a>
+      <div class="copyright">© 2026 Richard Musya · All Rights Reserved · v2.0.1</div>
+    </section>
+    <footer>KL5 CONTROL CENTER <span>•</span> KEEP IT COOL. KEEP IT SAFE.</footer>
+  </main>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,29 +1,12 @@
-# KL5 Smart FastCharge Changelog
+# Changelog
 
-## Version 1.2
+## 2.0.1 - 2026-11-17
+- Preserved the v2.0 KsuWebUI dashboard, manual brightness controls, reference thresholds, diagnostics, logs, boot greeting and module identity.
+- Replaced preference-only charging profile actions with a guarded SGM41516D-aware backend.
+- Added source-type detection (SDP/CDP/DCP/USB-PD), negotiated-current and MediaTek ceiling checks, writable-node checks, write/read-back verification and baseline restoration on rejected requests.
+- Added 500 ms charger connection/source-change watcher and thermal/state-of-charge fallback to Normal.
+- Replaced the RM footer monogram with the developer's GitHub profile avatar.
+- No raw I2C register access, kernel-module insertion, adapter spoofing or thermal-protection bypass.
 
-- Prepared the first updated public release.
-- Validated the official Magisk module installer.
-- Improved release packaging and installation compatibility.
-- Added Magisk automatic update metadata.
-- Preserved stock charging and thermal protections.
-- Retained SC8950 charging-controller detection.
-- Retained charging diagnostic and battery monitoring.
-
-## Version 1.1
-
-- Added automatic boot-time initialization.
-- Added continuous charging monitoring.
-- Added SC8950 controller detection.
-- Added charging diagnostic logging.
-- Added screen-state monitoring.
-- Preserved original charging and thermal protections.
-
-## Version 1.0
-
-- Initial module release.
-- Added TECNO KL5 compatibility checks.
-
----
-
-Copyright © 2026 Richard Musya. All Rights Reserved.
+## 2.0
+- Initial KsuWebUI control center, battery telemetry, manual brightness, thresholds, diagnostics, logs and boot greeting.

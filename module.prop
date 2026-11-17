@@ -1,7 +1,7 @@
 id=kl5_smart_fastcharge
-name=KL5 Smart FastCharge
-version=1.2
-versionCode=3
+name=KL5 Smart FastCharge Control Center
+version=2.0.1
+versionCode=11
 author=Richard Musya
-description=SC8950 charging monitor and diagnostic module for TECNO Spark 30C KL5.
+description=KL5 charging diagnostics, guarded SGM41516D profile control, KsuWebUI dashboard and manual display brightness tools.
 updateJson=https://raw.githubusercontent.com/RichardMusya/KL5-Smart-FastCharge/main/update.json
